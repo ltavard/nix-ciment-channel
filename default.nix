@@ -34,5 +34,7 @@ let
     # Arpack-ng
     arpackNG = callPackage ./ciment/arpack-ng { };  
 
+    # Trilinos
+    trilinos = callPackage ./ciment/trilinos { };
 };
 in pkgs // self
