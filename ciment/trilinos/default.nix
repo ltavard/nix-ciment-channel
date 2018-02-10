@@ -8,10 +8,11 @@
 , openmpi
 , swig
 , metis
-, superlu }:
-#, umfpack }:
+, superlu
+, suitesparse
+, cppunit }:
+}:
 #mumps
-#cholmod
 
 stdenv.mkDerivation rec {
 
@@ -25,8 +26,7 @@ stdenv.mkDerivation rec {
       sha256 = "1smz3wlpfyjn0czmpl8bj4hw33p1zi9nnfygpsx7jl1523nypa1n";
     };
 
-    #nativeBuildInputs = [ gfortran ];
-    buildInputs = [ superlu metis perl cmake gfortran blas liblapack boost netcdf netcdffortran hdf5 matio x11 python27 python27Packages.numpy openmpi swig];
+    buildInputs = [ cppunit suitesparse superlu metis perl cmake gfortran blas liblapack boost netcdf netcdffortran hdf5 matio x11 python27 python27Packages.numpy openmpi swig];
 ##
 #      "-DTPL_BLAS_INCLUDE_DIRS=/usr/include/suitesparse"
 #      "-DTPL_Cholmod_LIBRARIES='/usr/lib/x86_64-linux-gnu/libcholmod.so;/usr/lib/x86_64-linux-gnu/libamd.so;/usr/lib/x86_64-linux-gnu/libcolamd.so'"
@@ -34,9 +34,12 @@ stdenv.mkDerivation rec {
 #      "-DTPL_SuperLU_INCLUDE_DIRS=/usr/include/superlu"
 #      "-DTPL_UMFPACK_INCLUDE_DIRS=/usr/include/suitesparse"
 #      "-DTPL_SCALAPACK_LIBRARIES=/usr/lib/libscalapack-openmpi.so"
-    
     cmakeFlags = [
       "-DCMAKE_INSTALL_PREFIX=$out"
+      "-DTrilinos_INSTALL_INCLUDE_DIR=$out/include"
+      "-DTrilinos_INSTALL_LIB_DIR=$out/lib"
+      "-Drilinos_INSTALL_RUNTIME_DIR=$out/bin"
+      "-Drilinos_INSTALL_EXAMPLE_DIR=$out/example"
       "-DCMAKE_CXX_COMPILER=mpic++"
       "-DCMAKE_C_COMPILER=mpicc"
       "-DCMAKE_Fortran_COMPILER=mpif90"
@@ -44,8 +47,8 @@ stdenv.mkDerivation rec {
       "-DBUILD_SHARED_LIBS=ON"
       "-DTPL_ENABLE_BLAS=ON"
       "-DTPL_ENABLE_Boost=ON"
-      "-DTPL_ENABLE_Cholmod=OFF" # !!!
-      "-DTPL_ENABLE_CppUnit=OFF" # !!!
+      "-DTPL_ENABLE_Cholmod=ON" # change
+      "-DTPL_ENABLE_CppUnit=ON" # change
       "-DTPL_ENABLE_LAPACK=ON"
       "-DTPL_ENABLE_METIS=ON"
       "-DTPL_ENABLE_MPI=ON"
@@ -55,7 +58,7 @@ stdenv.mkDerivation rec {
       "-DTPL_ENABLE_SCALAPACK=OFF" # !!
       "-DTPL_ENABLE_Scotch=OFF"
       "-DTPL_ENABLE_SuperLU=OFF"  # !!
-      "-DTPL_ENABLE_UMFPACK=OFF" # !!!
+      "-DTPL_ENABLE_UMFPACK=ON" #change
       "-DTrilinos_ENABLE_Amesos2=OFF" #!!
       "-DTrilinos_ENABLE_Belos=ON"
       "-DTrilinos_ENABLE_Ifpack2=ON"
@@ -87,14 +90,13 @@ stdenv.mkDerivation rec {
       "-DMueLu_ENABLE_Epetra=ON"
       "-DMueLu_ENABLE_EpetraExt=ON"
       "-DTeuchos_ENABLE_COMPLEX=ON"
-      "-DTrilinos_ENABLE_TESTS=OFF"
+      "-DTrilinos_ENABLE_TESTS=ON"
       "-DCMAKE_VERBOSE_MAKEFILE=ON"
     ];
-#      "-DTPL_ENABLE_MPI=ON"
       #"-DCMAKE_INSTALL_INCLUDEDIR=\${out}/include"
     
     #enableParallelBuilding = true;
-
+    dochek = true;
     meta = {
     	 description = "A self-contained collection of software in Trilinos
          focused on one primary class of numerical methods.
