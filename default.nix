@@ -36,5 +36,8 @@ let
 
     # Trilinos
     trilinos = callPackage ./ciment/trilinos { };
+
+    # ScaLAPACK
+    scalapack = callPackage ./ciment/scalapack { };
 };
 in pkgs // self
