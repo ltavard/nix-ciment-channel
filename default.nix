@@ -9,7 +9,7 @@ let
   callPackages = callPackagesWith (pkgs // self.ciment);
 
   self.ciment = rec {
-  
+
   # Hello
     hello = callPackage ./ciment/hello { };
 
@@ -32,7 +32,7 @@ let
     openmpi2 = callPackage ./ciment/openmpi/2.nix { };
 
     # Singularity
-    singularity = callPackage ./ciment/singularity { };  
+    singularity = callPackage ./ciment/singularity { };
 
     # Petsc
     petscComplex = callPackage ./ciment/petsc { scalarType = "complex"; };
@@ -43,7 +43,7 @@ let
     udocker = pythonPackages.callPackage ./ciment/udocker { };
 
     # Arpack-ng
-    arpackNG = callPackage ./ciment/arpack-ng { };  
+    arpackNG = callPackage ./ciment/arpack-ng { };
 
     # GMT
     gshhg-gmt = callPackage ./ciment/gmt/gshhg-gmt.nix { };
@@ -53,5 +53,10 @@ let
     # ParMETIS
     parmetis = callPackage ./ciment/parmetis { };
 
+    # Trilinos
+    trilinos = callPackage ./ciment/trilinos { };
+
+    # ScaLAPACK
+    scalapack = callPackage ./ciment/scalapack { };
 };
 in pkgs // self
